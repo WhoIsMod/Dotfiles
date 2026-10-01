@@ -1,6 +1,7 @@
 # ============================================================
 # Cozy Dark Sway  (Wayland / PipeWire / swww)
 # ============================================================
+xwayland enable
 set $mod Mod4
 set $term kitty
 set $menu fuzzel
