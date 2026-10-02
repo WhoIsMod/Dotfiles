@@ -18,7 +18,6 @@ KDE-style reference, with:
 
 ```
 unzip cozy-sway.zip && cd cozy-sway
-change the folder names from local and config to .local and .config
 bash install.sh --deps      # --deps installs packages with pacman first
 sway -C                     # validate the config
 ```
@@ -164,6 +163,12 @@ Needs `openvpn`, `polkit-gnome` and `zenity` (or `kdialog`).
   `pkill waybar; waybar -l debug`.
 - **`awww-daemon` can't find the Wayland socket:** you aren't in a Wayland
   session. Log in to Sway.
+- **File picker doesn't open in browsers:** needs `xdg-desktop-portal` +
+  `xdg-desktop-portal-gtk`, the portal config in
+  `~/.config/xdg-desktop-portal/sway-portals.conf`, and the
+  `dbus-update-activation-environment` line in the Sway config. Then run
+  `systemctl --user restart xdg-desktop-portal xdg-desktop-portal-gtk` (or log out
+  and back in). Check logs with `journalctl --user -u xdg-desktop-portal -b`.
 - **Empty box instead of an icon:** your Nerd Font lacks that glyph; install
   `ttf-jetbrains-mono-nerd` and `ttf-font-awesome`.
 - **No battery module:** the setup assumes a desktop; add a Waybar `battery`

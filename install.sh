@@ -9,7 +9,7 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 if [[ "${1:-}" == "--deps" ]]; then
     sudo pacman -S --needed sway waybar fuzzel mako swaylock swayidle grim slurp wl-clipboard \
         brightnessctl playerctl pavucontrol pipewire pipewire-pulse pipewire-alsa wireplumber \
-        xdg-desktop-portal-wlr network-manager-applet power-profiles-daemon gamemode libnotify \
+        xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr network-manager-applet power-profiles-daemon gamemode libnotify \
         kitty dolphin openvpn polkit-gnome zenity ttf-jetbrains-mono-nerd ttf-font-awesome curl
     echo ">> Also install the wallpaper daemon: awww (formerly swww), e.g. 'paru -S awww' or 'pacman -S awww'"
     echo ">> Optional: swayfx (rounded corners + blur) instead of sway"

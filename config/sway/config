@@ -1,7 +1,6 @@
 # ============================================================
 # Cozy Dark Sway  (Wayland / PipeWire / swww)
 # ============================================================
-xwayland enable
 set $mod Mod4
 set $term kitty
 set $menu fuzzel
@@ -27,6 +26,8 @@ input type:touchpad {
 }
 
 # ---------- Startup ----------
+# Register the Sway session with systemd/D-Bus so portals (file pickers, screen share) work
+exec_always dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway SWAYSOCK
 exec_always ~/.local/bin/wallpaper init
 exec_always sh -c 'pkill -x waybar; exec waybar'
 exec mako
