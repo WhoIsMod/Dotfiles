@@ -18,6 +18,7 @@ KDE-style reference, with:
 
 ```
 unzip cozy-sway.zip && cd cozy-sway
+change the folder names from local and config to .local and .config
 bash install.sh --deps      # --deps installs packages with pacman first
 sway -C                     # validate the config
 ```
