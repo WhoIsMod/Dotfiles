@@ -18,6 +18,8 @@ KDE-style reference, with:
 
 ```
 unzip cozy-sway-debian.zip && cd cozy-sway-debian
+mv local .local
+mv config .config
 bash install.sh --deps      # --deps installs packages with apt first
 sway -C                     # validate the config
 ```
