@@ -122,7 +122,7 @@ The shield icon on the right of the panel works like OpenVPN GUI on Windows.
   Import config, Disconnect, Open folder, Show log
 - **Right-click:** disconnect
 
-Put `.ovpn` files in `~/.config/openvpn-gui/` or use **Import config**, which also
+Put `.ovpn` files in `~/.config/openvpn-gui/`, run `openvpn-menu import /path/to/file.ovpn`, or use **Import config**, which also
 copies cert/key files referenced next to the config. Connecting runs
 `openvpn` through `pkexec`, so a polkit prompt appears (an agent starts with Sway).
 If a config needs a username and password you'll be prompted for them; they are

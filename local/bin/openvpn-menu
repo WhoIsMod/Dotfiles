@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tray-style OpenVPN menu (like OpenVPN GUI on Windows).
-# Usage: openvpn-menu [menu|disconnect]
+# Usage: openvpn-menu [menu|disconnect|import [file.ovpn]]
 # Drop .ovpn files in ~/.config/openvpn-gui/ or use "Import config".
 set -uo pipefail
 
@@ -40,11 +40,19 @@ ask_secret() {
     else return 1; fi
 }
 pick_file() {
+    # GTK_USE_PORTAL=0 makes zenity use its own dialog, independent of xdg-desktop-portal.
+    # Filters are case-insensitive-ish and there is always an "All files" fallback.
     if command -v zenity >/dev/null; then
-        zenity --file-selection --title="Import OpenVPN config" --file-filter='OpenVPN configs | *.ovpn *.conf'
+        GTK_USE_PORTAL=0 zenity --file-selection --title="Import OpenVPN config" \
+            --filename="$HOME/" \
+            --file-filter='OpenVPN configs | *.ovpn *.OVPN *.conf *.CONF' \
+            --file-filter='All files | *'
     elif command -v kdialog >/dev/null; then
-        kdialog --getopenfilename "$HOME" '*.ovpn *.conf|OpenVPN configs'
-    else return 1; fi
+        kdialog --getopenfilename "$HOME" $'*.ovpn *.OVPN *.conf *.CONF|OpenVPN configs\n*|All files'
+    else
+        notify "OpenVPN" "No file dialog found (install zenity). Type the path instead."
+        ask_text "Full path to the .ovpn file"
+    fi
 }
 
 # ---------- actions ----------
@@ -105,8 +113,10 @@ connect() {
 
 import_config() {
     local src base dir ref r
-    src="$(pick_file)" || return 0
-    [[ -f "$src" ]] || return 0
+    src="${1:-}"
+    [[ -n "$src" ]] || src="$(pick_file)" || return 0
+    src="${src/#\~/$HOME}"
+    if [[ ! -f "$src" ]]; then notify "OpenVPN" "File not found: $src"; return 1; fi
     base="$(basename "$src")"; base="${base%.*}"
     dir="$CFG_DIR/$base"
     mkdir -p "$dir"
@@ -164,6 +174,7 @@ show_menu() {
 case "${1:-menu}" in
     menu)       show_menu ;;
     disconnect) disconnect ;;
+    import)     import_config "${2:-}" ;;
     _watch)     watch_connection "${2:-vpn}" ;;
-    *) echo "Usage: $0 [menu|disconnect]"; exit 1 ;;
+    *) echo "Usage: $0 [menu|disconnect|import [file]]"; exit 1 ;;
 esac
