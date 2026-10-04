@@ -1,4 +1,4 @@
-# Cozy Dark Sway (Debian edition)
+# Cozy Dark Sway
 
 A cozy dark Wayland desktop built on **Sway**, styled after a navy and lavender
 KDE-style reference, with:
@@ -14,40 +14,26 @@ KDE-style reference, with:
 > an X11 session. Pick **Sway** at your login screen (or run
 > `sway --unsupported-gpu` from a TTY if you use the proprietary NVIDIA driver).
 
-## Install (Debian 13 "trixie")
+## Install
 
 ```
-unzip cozy-sway-debian.zip && cd cozy-sway-debian
-bash install.sh --deps      # --deps installs packages with apt first
+unzip cozy-sway.zip && cd cozy-sway
+bash install.sh --deps      # --deps installs packages with pacman first
 sway -C                     # validate the config
 ```
 
-Then log out and choose the **Sway** session at the login screen. `install.sh`
-backs up any file it replaces as `<file>.bak-<timestamp>`.
+Then log out and choose the **Sway** session. `install.sh` backs up any file it
+replaces as `<file>.bak-<timestamp>`.
 
-What `--deps` does beyond `apt install`:
+Install the wallpaper daemon separately. `swww` was renamed **`awww`**; install
+whichever your repos provide (the scripts support both):
 
-- installs a polkit agent (needed for the VPN password prompt), picking the first of
-  `policykit-1-gnome`, `polkit-kde-agent-1`, `mate-polkit`, `lxpolkit` that exists
-- downloads **JetBrainsMono Nerd Font** into `~/.local/share/fonts` (not in Debian)
-- installs the wallpaper daemon **awww** (formerly swww) from apt if packaged,
-  otherwise builds it with `cargo`. If that fails, install it from the project's
-  page and put the binaries in `~/.local/bin`
-- enables the PipeWire user services
+```
+paru -S awww        # or: sudo pacman -S awww   (or swww)
+```
 
-Notes for Debian:
-
-- **Debian 12 (bookworm)** has older Sway/Waybar and no `fuzzel`; use trixie, or
-  install those from backports or source.
-- **SwayFX** (rounded corners and blur) isn't packaged in Debian. Plain Sway works
-  fine; effects only apply if you build SwayFX yourself.
-- If `pulseaudio` is installed, remove it so `pipewire-pulse` takes over:
-  `sudo apt remove pulseaudio`.
-- `openvpn` lives in `/usr/sbin` on Debian; the VPN script handles that.
-- The file manager launcher uses Dolphin (pulls in KDE libraries). To use something
-  lighter, install `thunar` and change `dolphin` in `~/.config/sway/config` and
-  `~/.config/waybar/config.jsonc`.
-- NVIDIA proprietary driver: run Sway with `sway --unsupported-gpu`.
+Optional: install **SwayFX** instead of plain Sway for rounded corners and blur.
+The installer enables `fx.conf` only when SwayFX is detected.
 
 ## Keybinds (`$mod` = Super)
 
@@ -154,7 +140,6 @@ Needs `openvpn`, `polkit-gnome` and `zenity` (or `kdialog`).
 ~/.config/kitty/cozy-dark.conf   colours (included from kitty.conf)
 ~/.config/gamemode.ini
 ~/.local/bin/
-    polkit-agent                 starts whichever polkit agent is installed
     desktop-mode                 game/business controller
     waybar-mode, waybar-weather, waybar-uptime
     wallpaper                    swww/awww manager
